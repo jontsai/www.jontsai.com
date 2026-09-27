@@ -1,0 +1,3 @@
+[submodule "tests/fixtures/legacy"]
+	path = tests/fixtures/legacy
+	url = https://github.com/jontsai/jontsai.github.com.git
