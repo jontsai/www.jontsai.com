@@ -25,22 +25,11 @@ export function PageView({
       articleDate={post?.date}
     >
       <header className={`page-heading ${isHome ? "home-heading" : ""}`}>
-        <span className="eyebrow">
-          {isHome
-            ? "Software · Curiosity · Craft"
-            : route.kind === "post"
-              ? "Notes from the workbench"
-              : "Jonathan Tsai / " + route.title}
-        </span>
-        <h1>
-          {isHome ? (
-            <>
-              Hello, internet<span className="accent">.</span>
-            </>
-          ) : (
-            route.title
-          )}
-        </h1>
+        <div className="window-title" aria-hidden="true">
+          <span>jontsai@www:~{route.canonical}</span>
+          <span className="window-controls">─ □ ×</span>
+        </div>
+        <h1>{route.title}</h1>
         {(content?.tagline || post?.tagline) && (
           <p className="terminal-line">
             <span>$</span> {content?.tagline || post?.tagline}

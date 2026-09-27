@@ -91,9 +91,24 @@ export function SiteLayout({
       </a>
       <div className="site-shell">
         <header className="site-header">
-          <a href="/" className="wordmark" aria-label="Jonathan Tsai, home">
-            jon<span>athan</span>tsai<span className="cursor">_</span>
-          </a>
+          <div className="identity">
+            <img
+              className="portrait"
+              src="/img/portrait.jpg"
+              width="88"
+              height="88"
+              alt="Jonathan Tsai"
+            />
+            <div>
+              <span className="host-label">jontsai@www:~</span>
+              <a href="/" className="wordmark" aria-label="Jonathan Tsai, home">
+                jon<span>athan</span> tsai
+                <span className="cursor" aria-hidden="true">
+                  _
+                </span>
+              </a>
+            </div>
+          </div>
           <div className="header-actions">
             <button
               className="theme-button"
@@ -130,6 +145,13 @@ export function SiteLayout({
         <div className="site-intro">
           <p>{site.quote}</p>
           <span>{site.quoteSource}</span>
+        </div>
+        <div className="command-bar">
+          <span className="session-label">
+            <span aria-hidden="true">❯</span> welcome to my corner of the
+            internet
+          </span>
+          <InteractiveTools />
         </div>
         <div className="page-grid">
           <main id="main" tabIndex={-1}>
@@ -168,7 +190,6 @@ export function SiteLayout({
             </p>
             <a href="/sitemap.xml">Sitemap</a>
           </div>
-          <InteractiveTools />
         </footer>
       </div>
     </>

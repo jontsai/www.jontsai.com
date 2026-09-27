@@ -36,8 +36,9 @@
 
 ## Intentional differences
 
-- New responsive visual design; same public editorial content. The homepage
-  heading is “Hello, internet.”; its SEO title remains “Home - Jonathan Tsai”.
+- Responsive terminal-inspired design retains the original white-on-black,
+  orange/green palette and monospaced identity. The homepage heading is “Home”;
+  its SEO title remains “Home - Jonathan Tsai”.
 - Blog pages 2–9 have unique page-number titles instead of nine identical titles.
 - The broken HackerOne profile link has its missing slash restored.
 - Kramdown and markdown-it disagree on literal pipe separators and one malformed

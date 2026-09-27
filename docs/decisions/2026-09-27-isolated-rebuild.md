@@ -29,3 +29,22 @@ provider and sitemap generator. One route manifest drives export and validation.
   cutover approval, Pages configuration and a manually dispatched workflow.
 - Frozen public content/anchor/link/image fixtures permit offline regression tests.
   Read-only live comparisons can be rerun separately without silently updating them.
+
+## Visual refinement: terminal identity
+
+Jonathan rejected the first preview's editorial styling as too different from his
+original personal site. The requested direction is distinctly his: white on black,
+shades of orange and green, and the feeling of a terminal application in a browser.
+
+Keeping the editorial design with different colors would not recover that identity.
+Reproducing the old YUI-era layout literally would retain its responsive limitations.
+Instead, retain the original monospaced nameplate, square portrait, command tagline,
+and orange/green hierarchy in shared, responsive React components. Use a terminal
+path title strip for every page and expose the functional keyboard/console controls
+near the top. Keep semantic navigation, native dialogs, focus management, readable
+contrast, theme preference, and static no-JavaScript content.
+
+The homepage heading returns to “Home.” Editorial content, routes, metadata and
+third-party integrations are unchanged. Desktop/mobile and light/dark screenshots
+were inspected; existing browser and baseline comparisons verify behavior and content.
+The original site remains the read-only reference, with all changes confined to PR #1.

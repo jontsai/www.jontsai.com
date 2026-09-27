@@ -17,16 +17,10 @@ export function Sidebar() {
   return (
     <aside className="sidebar" aria-label="Elsewhere">
       <div className="sidebar-card">
-        <img
-          className="portrait"
-          src="/img/portrait.jpg"
-          width="64"
-          height="64"
-          alt="Jonathan Tsai"
-        />
-        <span className="eyebrow">Around the web</span>
-        <h2>Let’s connect.</h2>
-        <p>Code, conversations, and things worth sharing.</p>
+        <h2>
+          <span aria-hidden="true">./</span>elsewhere
+        </h2>
+        <p>Find me on the network.</p>
         <a href="https://twitter.com/jontsai">Tweets by @jontsai ↗</a>
         <a href="/tweets.html">Favorite tweets →</a>
         <a href="https://clarity.fm/jontsai">Book a call on Clarity ↗</a>

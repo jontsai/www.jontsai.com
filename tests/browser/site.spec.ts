@@ -11,9 +11,7 @@ test("homepage is responsive, error-free, and all original navigation works", as
   const errors: string[] = [];
   page.on("pageerror", (e) => errors.push(e.message));
   await page.goto("/");
-  await expect(page.getByRole("heading", { level: 1 })).toContainText(
-    "Hello, internet",
-  );
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("Home");
   await expect(page.locator(".post-list li")).toHaveCount(5);
   expect(
     await page.evaluate(
