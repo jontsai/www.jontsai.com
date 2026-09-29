@@ -10,13 +10,13 @@ export function Sidebar() {
         </h2>
         <p>Find me on the network.</p>
         <LazyWidget
-          title="Tweets"
+          title="Posts on X"
           buttonLabel="Load timeline"
-          fallbackUrl="https://twitter.com/jontsai"
+          fallbackUrl="https://x.com/jontsai"
           fallbackLabel="Open @jontsai on X"
           mount={mountTimeline}
         />
-        <a href="/tweets.html">Favorite tweets →</a>
+        <a href="/tweets.html">Favorite posts on X →</a>
         <LazyWidget
           title="Clarity"
           buttonLabel="Load call widget"

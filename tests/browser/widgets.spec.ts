@@ -48,7 +48,7 @@ test("widgets mount independently, reload, and use authenticated frame messages 
     .getByRole("button", { name: "Load timeline", exact: true })
     .click();
   await expect(
-    page.getByRole("button", { name: "Reload Tweets", exact: true }),
+    page.getByRole("button", { name: "Reload Posts on X", exact: true }),
   ).toBeVisible();
   await expect(frame).toBeVisible();
   await page
@@ -59,10 +59,10 @@ test("widgets mount independently, reload, and use authenticated frame messages 
   ).toBeVisible();
   await expect(page.getByTitle("Tweets by jontsai")).toBeVisible();
   await page
-    .getByRole("button", { name: "Reload Tweets", exact: true })
+    .getByRole("button", { name: "Reload Posts on X", exact: true })
     .click();
   await expect(
-    page.getByRole("button", { name: "Reload Tweets", exact: true }),
+    page.getByRole("button", { name: "Reload Posts on X", exact: true }),
   ).toBeVisible();
   expect(scripts).toBe(1);
   expect(
@@ -96,21 +96,23 @@ test("blocked timeline script shows a useful fallback and retry can recover", as
     .click();
   await expect(
     page
-      .getByRole("region", { name: "Tweets", exact: true })
+      .getByRole("region", { name: "Posts on X", exact: true })
       .getByRole("status"),
-  ).toContainText("Tweets couldn't load here");
+  ).toContainText("Posts on X couldn't load here");
   await expect(
     page.getByRole("link", { name: "Open @jontsai on X" }),
-  ).toHaveAttribute("href", "https://twitter.com/jontsai");
+  ).toHaveAttribute("href", "https://x.com/jontsai");
   await page.route("https://platform.twitter.com/widgets.js", (route) =>
     route.fulfill({
       contentType: "application/javascript",
       body: twitterScript,
     }),
   );
-  await page.getByRole("button", { name: "Retry Tweets", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Retry Posts on X", exact: true })
+    .click();
   await expect(
-    page.getByRole("button", { name: "Reload Tweets", exact: true }),
+    page.getByRole("button", { name: "Reload Posts on X", exact: true }),
   ).toBeVisible();
 });
 test("provider silence times out without leaving a blank frame or breaking the other widget", async ({
@@ -135,7 +137,7 @@ test("provider silence times out without leaving a blank frame or breaking the o
     .click();
   await page.clock.runFor(12500);
   await expect(
-    page.getByRole("button", { name: "Retry Tweets", exact: true }),
+    page.getByRole("button", { name: "Retry Posts on X", exact: true }),
   ).toBeVisible();
   await expect(
     page.getByRole("button", { name: "Retry Clarity", exact: true }),

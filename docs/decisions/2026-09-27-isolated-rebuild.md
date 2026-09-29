@@ -99,3 +99,13 @@ that exact iframe and trusted origin for ready/height/booking. Request a Call go
 to the provider's booking page rather than the obsolete parent modal loader. Keep
 persistent direct links; do not introduce paid API services or bypass X rate limits.
 Clarity rendering/reload is live-verified; X's 429 remains an external limitation.
+
+## September 28: footer and X terminology
+
+Jonathan identified “Hacking in the dark” as his previous OSS Jekyll theme, not
+an appropriate tagline for the new implementation. Remove that tagline, retaining
+copyright and accurate Next.js/nextjs-htk credits. Use “Posts on X” for the timeline
+and saved-post page, “Favorite posts on X” for its sidebar link, and “Share on X”
+for sharing. Preserve `/tweets.html`, archived post text/links, and provider-required
+Twitter protocol identifiers. This copy change does not remove the live timeline
+or change the existing click-to-load behavior.

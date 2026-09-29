@@ -32,7 +32,7 @@ export const site = {
   social: [
     { title: "GitHub", url: "https://github.com/jontsai" },
     { title: "LinkedIn", url: "https://linkedin.com/in/jontsai" },
-    { title: "Twitter", url: "https://twitter.com/jontsai" },
+    { title: "X", url: "https://x.com/jontsai" },
     { title: "Facebook", url: "https://facebook.com/jontsai" },
     { title: "Flickr", url: "https://flickr.com/photos/jontsai8601" },
     { title: "Feedburner", url: "https://feeds.feedburner.com/jontsai" },

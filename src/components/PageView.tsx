@@ -70,7 +70,7 @@ export function PageView({
             <a
               href={`https://twitter.com/intent/tweet?url=${encodeURIComponent("https://www.jontsai.com" + post.url)}&text=${encodeURIComponent(post.title)}`}
             >
-              Twitter ↗
+              Share on X ↗
             </a>
             <a
               href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent("https://www.jontsai.com" + post.url)}`}
@@ -157,7 +157,7 @@ export function PageView({
           {[
             ...navigation,
             ...footerNavigation,
-            { title: "Tweets", url: "/tweets.html" },
+            { title: "Posts on X", url: "/tweets.html" },
             { title: "RSS feed", url: "/rss.xml" },
             { title: "Atom feed", url: "/atom.xml" },
             { title: "Sitemap", url: "/sitemap.xml" },

@@ -14,7 +14,10 @@ test("frozen live-site text, deep links, images and article links survive migrat
         text.includes(normalizeLegacyText(block)),
         `${page.path}: missing text ${block.slice(0, 80)}`,
       );
-    assert.equal($("title").text(), page.title);
+    assert.equal(
+      $("title").text(),
+      page.path === "/tweets" ? "Posts on X - Jonathan Tsai" : page.title,
+    );
     const ids = new Set(
       $("[id]")
         .map((_, el) => $(el).attr("id"))

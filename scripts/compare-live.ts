@@ -91,7 +91,11 @@ for (let i = 0; i < routes.length; i += 3) {
           note:
             route.kind === "blog" && route.page! > 1
               ? "Page number added to title for unique SEO titles."
-              : undefined,
+              : route.source === "tweets.html" &&
+                  normalize(built("title").text()) ===
+                    "Posts on X - Jonathan Tsai"
+                ? "X terminology updated at owner request; legacy URL and post content preserved."
+                : undefined,
         });
       } catch (error) {
         reports.push({ path: route.canonical, error: String(error) });

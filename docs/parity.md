@@ -46,6 +46,11 @@
 
 ## Intentional differences
 
+- Owner-requested copy refresh: “Posts on X” replaces Tweets in navigation, the
+  sidebar and saved-post page title. `/tweets.html`, original post text/links and
+  provider-required Twitter identifiers stay intact. Removed the retired Jekyll
+  theme tagline from the footer; copyright and current build credits remain.
+
 - Responsive terminal-inspired design retains the original white-on-black,
   orange/green palette and monospaced identity. The homepage heading is “Home”;
   its SEO title remains “Home - Jonathan Tsai”. The original Courier masthead has

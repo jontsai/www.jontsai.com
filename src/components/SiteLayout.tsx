@@ -181,7 +181,7 @@ export function SiteLayout({
             <p>
               Built with <a href="https://nextjs.org">Next.js</a> +{" "}
               <a href="https://github.com/hacktoolkit/nextjs-htk">nextjs-htk</a>
-              . Hacking in the dark, since 2012.
+              .
             </p>
             <a href="/sitemap.xml">Sitemap</a>
           </div>

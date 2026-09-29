@@ -60,15 +60,15 @@ export function TweetEmbeds() {
       {status !== "ready" && (
         <button onClick={load} disabled={status === "loading"}>
           {status === "loading"
-            ? "Loading tweets…"
+            ? "Loading posts…"
             : status === "error"
-              ? "Retry interactive tweets"
-              : "Load interactive tweets"}
+              ? "Retry interactive posts"
+              : "Load interactive posts"}
         </button>
       )}
       {status === "error" && (
         <p role="status">
-          X could not load interactive tweets. The saved text and original links
+          X could not load interactive posts. The saved text and original links
           remain available above.
         </p>
       )}
