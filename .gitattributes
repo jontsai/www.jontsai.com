@@ -1,0 +1,2 @@
+# Preserve original content byte-for-byte, including Markdown hard breaks and EOF.
+content/** whitespace=-blank-at-eol,-blank-at-eof

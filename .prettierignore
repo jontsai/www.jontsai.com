@@ -1,0 +1,8 @@
+node_modules/
+.next/
+out/
+public/
+artifacts/
+tests/fixtures/
+content/
+package-lock.json

@@ -1,0 +1,40 @@
+{
+  "name": "www.jontsai.com",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "tsx scripts/prepare.ts && next dev --hostname 127.0.0.1 --port 3147",
+    "build": "tsx scripts/prepare.ts && next build --webpack && tsx scripts/export.ts",
+    "preview": "tsx scripts/serve.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test tests/*.test.ts",
+    "test:browser": "playwright test",
+    "compare:live": "tsx scripts/compare-live.ts",
+    "format:check": "prettier --check src scripts tests/*.ts tests/browser playwright.config.ts next.config.ts tsconfig.json package.json .github README.md docs"
+  },
+  "dependencies": {
+    "@hacktoolkit/nextjs-htk": "0.3.0",
+    "gray-matter": "4.0.3",
+    "highlight.js": "11.11.1",
+    "markdown-it": "14.3.2",
+    "markdown-it-anchor": "9.2.0",
+    "next": "16.3.6",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.58.0",
+    "@types/markdown-it": "^14.1.2",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "cheerio": "^1.1.2",
+    "prettier": "3.8.3",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "type": "module"
+}

@@ -1,0 +1,51 @@
+name: Deploy approved production site
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: Publish the tested artifact (requires approved cutover and PAGES_DEPLOY_ENABLED)
+        type: boolean
+        default: false
+      confirm_domain:
+        description: "To publish manually, type www.jontsai.com"
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: pages
+  cancel-in-progress: false
+jobs:
+  build:
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - uses: ./.github/actions/build-site
+        with:
+          mode: production
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+  deploy:
+    needs: build
+    # Opt-in only after approved cutover; merging this PR alone cannot publish.
+    if: >-
+      vars.PAGES_DEPLOY_ENABLED == 'true' &&
+      (github.event_name == 'push' ||
+      (inputs.publish && inputs.confirm_domain == 'www.jontsai.com'))
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/configure-pages@v5
+      - name: Deploy tested artifact
+        id: deployment
+        uses: actions/deploy-pages@v4
