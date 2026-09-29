@@ -6,18 +6,34 @@ export function LazyWidget({
   fallbackUrl,
   fallbackLabel,
   mount,
+  autoLoad = false,
 }: {
   title: string;
   buttonLabel: string;
   fallbackUrl: string;
   fallbackLabel: string;
   mount: MountWidget;
+  autoLoad?: boolean;
 }) {
   const [attempt, setAttempt] = useState(0);
   const [status, setStatus] = useState<"idle" | "loading" | "ready" | "error">(
     "idle",
   );
   const container = useRef<HTMLDivElement>(null);
+  const section = useRef<HTMLElement>(null);
+  useEffect(() => {
+    if (!autoLoad || !section.current) return;
+    // Hidden mobile sidebars should not fetch a widget visitors cannot see.
+    const observer = new IntersectionObserver((entries) => {
+      if (entries.some((entry) => entry.isIntersecting)) {
+        observer.disconnect();
+        setStatus("loading");
+        setAttempt(1);
+      }
+    });
+    observer.observe(section.current);
+    return () => observer.disconnect();
+  }, [autoLoad]);
   useEffect(() => {
     if (!attempt || !container.current) return;
     let active = true;
@@ -52,9 +68,9 @@ export function LazyWidget({
     setAttempt((value) => value + 1);
   }
   return (
-    <section className="provider-widget" aria-label={title}>
+    <section ref={section} className="provider-widget" aria-label={title}>
       <h3>{title}</h3>
-      {status !== "ready" && (
+      {status !== "ready" && (!autoLoad || status !== "idle") && (
         <button onClick={load} disabled={status === "loading"}>
           {status === "loading"
             ? "Loading…"

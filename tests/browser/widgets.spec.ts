@@ -18,7 +18,7 @@ parent.postMessage('site-clarity:show',target);
 parent.postMessage('site-clarity:setHeight,240',target);
 document.getElementById('request-call').onclick=()=>parent.postMessage('site-clarity:modal:open,41158',target);
 </script></body></html>`;
-test("widgets mount independently, reload, and use authenticated frame messages for booking", async ({
+test("Clarity loads without clicking; widgets reload independently and validate booking messages", async ({
   page,
 }) => {
   let scripts = 0;
@@ -36,9 +36,7 @@ test("widgets mount independently, reload, and use authenticated frame messages 
     route.fulfill({ contentType: "text/html", body: "Booking page" }),
   );
   await page.goto("/");
-  await page
-    .getByRole("button", { name: "Load call widget", exact: true })
-    .click();
+  await expect(page.locator(".clarity-widget")).toBeVisible();
   const frame = page.locator(".clarity-widget");
   await expect(
     page.getByRole("button", { name: "Reload Clarity", exact: true }),
@@ -132,9 +130,7 @@ test("provider silence times out without leaving a blank frame or breaking the o
   await page
     .getByRole("button", { name: "Load timeline", exact: true })
     .click();
-  await page
-    .getByRole("button", { name: "Load call widget", exact: true })
-    .click();
+  await expect(page.locator(".clarity-widget")).toBeVisible();
   await page.clock.runFor(12500);
   await expect(
     page.getByRole("button", { name: "Retry Posts on X", exact: true }),
@@ -146,4 +142,30 @@ test("provider silence times out without leaving a blank frame or breaking the o
   await expect(
     page.getByRole("link", { name: "Book a call on Clarity" }),
   ).toBeVisible();
+});
+
+test("hidden sidebar defers Clarity until visible and does not remount on scroll", async ({
+  page,
+}) => {
+  let requests = 0;
+  await page.route("https://clarity.fm/widget?*", (route) => {
+    requests++;
+    return route.fulfill({ contentType: "text/html", body: clarityPage });
+  });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  await page.getByRole("button", { name: "Console", exact: false }).click();
+  await expect(page.getByRole("dialog")).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(page.locator(".clarity-widget")).toHaveCount(0);
+  expect(requests).toBe(0);
+  await page.setViewportSize({ width: 1440, height: 1050 });
+  await expect(
+    page.getByRole("button", { name: "Reload Clarity", exact: true }),
+  ).toBeVisible();
+  await page.locator("footer").scrollIntoViewIfNeeded();
+  await page
+    .getByRole("region", { name: "Clarity", exact: true })
+    .scrollIntoViewIfNeeded();
+  expect(requests).toBe(1);
 });
