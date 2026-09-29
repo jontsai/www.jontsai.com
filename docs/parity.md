@@ -27,8 +27,14 @@
 - `T` opens contact choices; **Open live chat** loads the original isolated Olark
   bootstrap. Email and the original contact URL remain available if the account
   or remote service does not work. Provider availability is not a local test pass.
-- Twitter timeline/tweets and Clarity widgets load on request with ordinary links
-  as fallbacks. Local tests do not claim the remote provider works.
+- Twitter timeline and Clarity load independently on request, with visible status,
+  a 12-second timeout, retry/reload, and direct profile links. The Twitter script
+  is shared with the saved-tweets page; the timeline uses explicit createTimeline.
+- Live checks on September 28: Clarity profile rendering and reload work. The
+  Request a Call action hands off to the provider booking page (no booking made).
+  X's timeline endpoint returned HTTP 429; actual tweet delivery is still provider-
+  blocked, not claimed fixed. Failure now presents retry/direct-link UI, not a blank
+  box. Provider-success/retry/timeout and Clarity handoff are covered by browser tests.
 - The old Java-applet IP lookup is replaced. The `ip`
   command now explicitly requests a public IPv4/IPv6 address from ipify over HTTPS,
   only when run. No lookup on page load; credentials and referrer are omitted.

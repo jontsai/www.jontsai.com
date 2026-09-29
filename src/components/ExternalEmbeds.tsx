@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { site } from "../config";
+import { loadTwitter } from "../lib/twitter";
 import type { Article } from "../lib/types";
 export function Comments({ post }: { post: Article }) {
   const [loaded, setLoaded] = useState(false);
@@ -41,16 +42,36 @@ export function Comments({ post }: { post: Article }) {
   );
 }
 export function TweetEmbeds() {
-  const [loaded, setLoaded] = useState(false);
-  useEffect(() => {
-    if (!loaded) return;
-    const script = document.createElement("script");
-    script.src = "https://platform.twitter.com/widgets.js";
-    script.async = true;
-    document.body.append(script);
-    return () => script.remove();
-  }, [loaded]);
-  return !loaded ? (
-    <button onClick={() => setLoaded(true)}>Load interactive tweets</button>
-  ) : null;
+  const [status, setStatus] = useState<"idle" | "loading" | "ready" | "error">(
+    "idle",
+  );
+  async function load() {
+    setStatus("loading");
+    try {
+      const twitter = await loadTwitter();
+      await twitter.widgets.load(document.getElementById("main")!);
+      setStatus("ready");
+    } catch {
+      setStatus("error");
+    }
+  }
+  return (
+    <div>
+      {status !== "ready" && (
+        <button onClick={load} disabled={status === "loading"}>
+          {status === "loading"
+            ? "Loading tweets…"
+            : status === "error"
+              ? "Retry interactive tweets"
+              : "Load interactive tweets"}
+        </button>
+      )}
+      {status === "error" && (
+        <p role="status">
+          X could not load interactive tweets. The saved text and original links
+          remain available above.
+        </p>
+      )}
+    </div>
+  );
 }

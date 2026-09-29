@@ -85,3 +85,17 @@ The jonts.ai post already has its original dated permalink, recent-post entry,
 archive and taxonomy links. Recommend a permanent About-page contextual link plus
 an optional sidebar link so it remains discoverable after aging out of recent posts.
 No editorial content or navigation placement was changed for that recommendation.
+
+## Sidebar provider recovery (September 28)
+
+User reported both embeds blank. A live browser reproduction found X's timeline
+endpoint returning HTTP 429 and Clarity's one-shot global loader fragile across
+widget switching. Replace the exclusive widget slot with independent lazy widgets,
+shared status/retry/timeout handling, and provider-owned DOM isolated from React.
+
+Twitter uses one shared script and explicit createTimeline (do-not-track enabled).
+Clarity embeds its existing provider widget directly and handles only messages from
+that exact iframe and trusted origin for ready/height/booking. Request a Call goes
+to the provider's booking page rather than the obsolete parent modal loader. Keep
+persistent direct links; do not introduce paid API services or bypass X rate limits.
+Clarity rendering/reload is live-verified; X's 429 remains an external limitation.

@@ -27,6 +27,7 @@ export const site = {
     disqus: "jontsai",
     olark: "7118-420-10-7984",
     clarity: "41158",
+    clarityProfile: "https://clarity.fm/jontsai",
   },
   social: [
     { title: "GitHub", url: "https://github.com/jontsai" },

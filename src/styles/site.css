@@ -847,13 +847,41 @@ time {
   flex-shrink: 0;
   object-fit: cover;
 }
-.widget-controls {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin: 12px 0;
+.provider-widget {
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+  margin-top: 14px;
 }
-.widget-controls button {
-  font-size: 10px;
-  padding: 4px 7px;
+.provider-widget h3 {
+  font-size: 13px;
+  color: var(--accent);
+  margin: 0 0 10px;
+}
+.provider-widget button {
+  font-size: 11px;
+  min-height: 36px;
+  padding: 6px 8px;
+}
+.provider-widget p {
+  margin: 8px 0;
+  line-height: 1.6;
+}
+.provider-widget p:empty {
+  display: none;
+}
+.provider-widget a {
+  display: block;
+  font-size: 11px;
+  margin: 10px 0;
+}
+.provider-content {
+  max-width: 100%;
+  overflow: hidden;
+}
+.provider-content iframe {
+  display: block;
+  width: 100%;
+}
+.widget-reload {
+  margin-top: 8px;
 }
