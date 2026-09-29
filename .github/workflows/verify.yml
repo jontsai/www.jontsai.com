@@ -8,28 +8,27 @@ permissions:
   contents: read
 jobs:
   verify:
+    name: Verify ${{ matrix.mode }} export
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        mode: [preview, production]
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: true
-      - uses: actions/setup-node@v4
+      - uses: ./.github/actions/build-site
         with:
-          node-version: 24
-          cache: npm
-      - run: npm ci
-      - run: npm run build
-      - run: npm run typecheck
-      - run: npm test
-      - run: npx playwright install --with-deps chromium
-      - run: npm run test:browser
+          mode: ${{ matrix.mode }}
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: test-results
+          name: test-results-${{ matrix.mode }}
           path: |
             artifacts/
             test-results/
       - uses: actions/upload-pages-artifact@v3
         with:
+          name: github-pages-${{ matrix.mode }}
           path: out

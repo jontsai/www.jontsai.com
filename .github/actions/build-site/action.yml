@@ -1,0 +1,34 @@
+name: Build and verify static site
+description: Shared build and tests for previews, production candidates, and releases.
+inputs:
+  mode:
+    description: Static export mode (preview or production)
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Validate build mode
+      shell: bash
+      env:
+        SITE_MODE: ${{ inputs.mode }}
+      run: '[[ "$SITE_MODE" == preview || "$SITE_MODE" == production ]]'
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 24
+        cache: npm
+    - run: npm ci
+      shell: bash
+    - run: npm run build
+      shell: bash
+      env:
+        SITE_MODE: ${{ inputs.mode }}
+    - run: npm run typecheck
+      shell: bash
+    - run: npm test
+      shell: bash
+      env:
+        SITE_MODE: ${{ inputs.mode }}
+    - run: npx playwright install --with-deps chromium
+      shell: bash
+    - run: npm run test:browser
+      shell: bash

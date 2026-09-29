@@ -113,7 +113,6 @@ test("feeds, sitemap and verification paths survive without duplicate sitemap en
   ])
     assert.equal(read(file), fs.readFileSync(path.join(fixture, file), "utf8"));
   assert.ok(fs.existsSync("out/.nojekyll"));
-  assert.ok(!fs.existsSync("out/CNAME"));
 });
 
 test("every URL in the original sitemap still has a static file", () => {
@@ -124,4 +123,25 @@ test("every URL in the original sitemap still has a static file", () => {
     paths.filter((url) => !exists(url)),
     [],
   );
+});
+
+test("deployment mode controls domain binding and indexing on every editorial page", () => {
+  const production = process.env.SITE_MODE === "production";
+  if (production) assert.equal(read("CNAME").trim(), "www.jontsai.com");
+  else
+    assert.ok(
+      !fs.existsSync("out/CNAME"),
+      "Preview must not claim the live domain",
+    );
+  const robots = read("robots.txt");
+  assert.equal(/^Disallow: \/$/m.test(robots), !production);
+  assert.match(robots, /Sitemap: https:\/\/www\.jontsai\.com\/sitemap\.xml/);
+  for (const route of routes) {
+    const $ = load(
+      read(route.path === "/" ? "index.html" : route.path + ".html"),
+    );
+    const directives = $("meta[name=robots]").attr("content") || "";
+    assert.equal(directives.includes("noindex"), !production, route.canonical);
+    assert.equal(directives.includes("nofollow"), !production, route.canonical);
+  }
 });

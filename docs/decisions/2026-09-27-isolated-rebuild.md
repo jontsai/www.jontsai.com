@@ -48,3 +48,19 @@ The homepage heading returns to “Home.” Editorial content, routes, metadata 
 third-party integrations are unchanged. Desktop/mobile and light/dark screenshots
 were inspected; existing browser and baseline comparisons verify behavior and content.
 The original site remains the read-only reference, with all changes confined to PR #1.
+
+## Git-driven deployment readiness (September 28)
+
+Jonathan requested deployment through the Git workflow while the old site stays
+untouched. The initial manual-only workflow tested the preview, then rebuilt an
+untested production artifact. A shared composite action now builds and verifies a
+selected mode; PR CI exercises both preview and production, including domain and
+indexing assertions. Deployment uses the same action and publishes its tested
+production artifact without rebuilding after verification.
+
+After explicit cutover approval, the repository variable `PAGES_DEPLOY_ENABLED`
+activates publishing on `master` pushes. Before activation, merges only build and
+upload artifacts. Manual dry runs remain available; manual publishing requires
+both the activation flag and domain confirmation. Pages/OIDC write permissions
+belong only to the deployment job. No Pages settings or domain bindings are changed
+by this implementation. The one-time activation and rollback steps are in README.

@@ -94,17 +94,43 @@ Builds **default to preview mode**: `noindex` metadata, robots disallowing crawl
 and no CNAME file. PR CI builds/tests/uploads a Pages artifact; it never deploys.
 Do not point the real domain at this repository while evaluating the rebuild.
 
-Only after explicit cutover approval:
+### Git workflow
 
-1. Complete the parity review and confirm third-party integrations/settings.
-2. Configure this repository’s Pages source to **GitHub Actions** and assign the
-   custom domain. Moving a domain off the original repository is a separate,
-   intentional cutover; preserve the old source for rollback.
-3. Dispatch **Deploy approved production site** on `master` with confirmation
-   `www.jontsai.com`. It builds with `SITE_MODE=production`, permits indexing,
-   emits the original CNAME and uploads/deploys `out/`.
-4. Verify the real domain, HTTP statuses, feeds, canonical URLs and HTTPS after
-   deployment. Retain the original repo/source until the migration is accepted.
+- Open/update a PR: CI builds **both preview and production** exports, then runs
+  TypeScript, URL/content/indexing checks and desktop/mobile browser tests against
+  each artifact. CI never publishes the PR.
+- Merge/push to `master`: the deployment workflow builds and tests the production
+  artifact using the **same composite action** as PR verification. With deployment
+  disabled, it only uploads the artifact. Once activated after cutover approval,
+  successful `master` pushes deploy that exact tested artifact to GitHub Pages.
+- Manual dry run: run **Deploy approved production site** on `master`, leaving
+  `publish` unchecked. It builds/tests/uploads without publishing, even after
+  automatic deployment is enabled.
+- Manual release/retry: select `master`, check `publish`, and enter
+  `www.jontsai.com`. The activation flag below is still required.
+
+### One-time activation (only after explicit cutover approval)
+
+1. Review and merge the migration PR; merging alone does **not** activate publishing.
+2. Configure this repository's Pages source as **GitHub Actions** and assign the
+   custom domain. Moving the domain off the original repository is a separate,
+   intentional cutover; preserve its source for rollback. Root-relative URLs
+   target the custom domain, not a `/www.jontsai.com/` project-site subpath.
+3. Restrict the `github-pages` deployment environment to `master` and configure
+   any desired required reviewers. Define repository Actions variable
+   `PAGES_DEPLOY_ENABLED` as the exact string `true`.
+4. Manually publish from `master` as above for the first release. Subsequent
+   approved merges/pushes to `master` build, test and deploy automatically.
+5. Verify the real domain, HTTP statuses, feeds, canonical URLs and HTTPS.
+   Retain the original repository/source until the migration is accepted.
+
+To pause future publishing, unset `PAGES_DEPLOY_ENABLED` or set it to `false`.
+This does not stop a deployment already in progress or unpublish the current site.
+After cutover, rollback uses a reviewed Git revert on `master`, which runs the same
+build/test/deploy path; it never resets or rewrites the old baseline repository.
+
+The workflow uses GitHub's job token/OIDC, not a personal deploy token. See
+[GitHub's custom Pages workflow documentation](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages).
 
 No Pages setting, DNS record, original source or live site is changed by this PR.
-The manual deployment workflow is prepared but has not been run.
+The deployment workflow is prepared but has not published a site.
