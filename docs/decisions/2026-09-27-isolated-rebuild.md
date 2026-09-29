@@ -109,3 +109,9 @@ and saved-post page, “Favorite posts on X” for its sidebar link, and “Shar
 for sharing. Preserve `/tweets.html`, archived post text/links, and provider-required
 Twitter protocol identifiers. This copy change does not remove the live timeline
 or change the existing click-to-load behavior.
+
+## September 28: automatic Clarity loading
+
+Jonathan requested no extra Load click for Clarity. Auto-load once its sidebar
+section is visible; skip requests while CSS hides the sidebar on mobile. Keep
+manual retry/reload and the direct booking link. The X timeline stays click-to-load.

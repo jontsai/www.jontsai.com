@@ -19,6 +19,7 @@ export function Sidebar() {
         <a href="/tweets.html">Favorite posts on X →</a>
         <LazyWidget
           title="Clarity"
+          autoLoad
           buttonLabel="Load call widget"
           fallbackUrl={site.integrations.clarityProfile}
           fallbackLabel="Book a call on Clarity"

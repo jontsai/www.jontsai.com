@@ -27,7 +27,8 @@
 - `T` opens contact choices; **Open live chat** loads the original isolated Olark
   bootstrap. Email and the original contact URL remain available if the account
   or remote service does not work. Provider availability is not a local test pass.
-- Twitter timeline and Clarity load independently on request, with visible status,
+- The X timeline loads on request; Clarity loads automatically when its sidebar
+  section becomes visible (not while hidden on mobile). Both have visible status,
   a 12-second timeout, retry/reload, and direct profile links. The Twitter script
   is shared with the saved-tweets page; the timeline uses explicit createTimeline.
 - Live checks on September 28: Clarity profile rendering and reload work. The
