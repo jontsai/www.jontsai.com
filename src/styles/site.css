@@ -11,6 +11,8 @@
   --font: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
   --amber-line: #776021;
   --terminal-tint: #211a10;
+  --masthead: #181818;
+  --wordmark-dim: #333;
 }
 :root[data-theme="light"] {
   color-scheme: light;
@@ -24,6 +26,8 @@
   --code: #eaece2;
   --amber-line: #aa7a28;
   --terminal-tint: #f4e9d4;
+  --masthead: #efeee6;
+  --wordmark-dim: #899186;
 }
 * {
   box-sizing: border-box;
@@ -177,35 +181,26 @@ hr {
   padding: 0 40px;
 }
 .site-header {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  flex-wrap: wrap;
-  padding-top: 32px;
+  padding-top: 20px;
+  background: var(--masthead);
 }
 .wordmark {
-  display: block;
+  font-family: "Courier New", Courier, monospace;
   color: var(--fg);
-  font-size: clamp(2rem, 4.5vw, 3.6rem);
-  font-weight: 800;
-  line-height: 1.15;
-  letter-spacing: -0.065em;
-  text-decoration: none;
+  font-size: clamp(42px, 6vw, 72px);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: clamp(3px, 0.7vw, 10px);
   white-space: nowrap;
 }
-.wordmark > span:not(.cursor) {
-  color: var(--muted);
-}
-.cursor {
-  color: var(--green);
-  margin-left: 3px;
+.wordmark .full-name {
+  color: var(--wordmark-dim);
 }
 .navigation {
   display: flex;
-  width: 100%;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 4px;
-  border-block: 1px solid var(--line);
-  margin-top: 4px;
 }
 .navigation a {
   color: var(--green);
@@ -220,10 +215,15 @@ hr {
   border-bottom-color: var(--accent);
 }
 .header-actions {
-  margin-left: auto;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
 }
 .theme-button {
   font-size: 21px;
+  min-width: 44px;
+  min-height: 44px;
   padding: 0 8px;
   border: 0;
   background: transparent;
@@ -232,23 +232,20 @@ hr {
   display: none;
 }
 .site-intro {
-  padding: 20px 0;
+  padding: 14px 16px 22px;
   color: var(--fg);
-  font-size: 12px;
-  line-height: 1.9;
+  font-family: "Palatino Linotype", Palatino, Georgia, serif;
+  font-style: italic;
+  text-align: center;
+  font-size: 20px;
+  line-height: 1.5;
 }
 .site-intro p {
   display: inline;
 }
 .site-intro span {
-  display: inline-block;
-  font:
-    10px "SFMono-Regular",
-    Consolas,
-    monospace;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  margin-left: 12px;
+  display: inline;
+  font-style: normal;
 }
 .page-grid {
   display: grid;
@@ -655,14 +652,12 @@ time {
 .identity {
   display: flex;
   align-items: center;
-  gap: 24px;
-  min-width: 0;
-}
-.host-label {
-  display: block;
-  color: var(--green);
-  font-size: 12px;
-  margin-bottom: 6px;
+  justify-content: center;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto;
+  gap: clamp(24px, 4vw, 48px);
+  text-decoration: none;
 }
 .command-bar {
   display: flex;
@@ -706,6 +701,45 @@ time {
   color: var(--accent);
   background: var(--surface);
 }
+.navigation-bar {
+  position: relative;
+  padding-right: 48px;
+  border-block: 1px solid var(--line);
+}
+.identity:hover .full-name {
+  color: var(--fg);
+}
+@media (max-width: 47em) {
+  .site-header {
+    padding-top: 12px;
+  }
+  .wordmark {
+    font-size: clamp(28px, 11.5vw, 72px);
+    letter-spacing: clamp(3px, 1.6vw, 10px);
+  }
+  .wordmark .full-name {
+    display: none;
+  }
+  .identity {
+    gap: clamp(12px, 4vw, 32px);
+  }
+  .identity .portrait {
+    width: clamp(64px, 21vw, 128px);
+    height: auto;
+  }
+  .site-intro {
+    font-size: 15px;
+    padding: 16px 10px;
+  }
+  .navigation {
+    gap: 0;
+    justify-content: space-evenly;
+  }
+  .navigation a {
+    font-size: 12px;
+    padding: 12px 6px;
+  }
+}
 @media (max-width: 900px) {
   .site-shell {
     padding: 0 28px;
@@ -714,51 +748,15 @@ time {
     gap: 32px;
     grid-template-columns: minmax(0, 1fr) 190px;
   }
-  .navigation {
-    gap: 18px;
-  }
 }
 @media (max-width: 700px) {
   .site-shell {
     padding: 0 16px;
   }
-  .site-header {
-    min-height: 86px;
-    gap: 16px;
-    padding: 22px 0 0;
-  }
-  .wordmark {
-    font-size: clamp(23px, 6.5vw, 36px);
-  }
-  .header-actions {
-    margin-left: auto;
-    display: flex;
-    gap: 8px;
-    order: initial;
-  }
   .menu-button {
     display: block;
     font-size: 12px;
     padding: 4px 10px;
-  }
-  .navigation {
-    width: 100%;
-    margin: 4px 0 0;
-    justify-content: space-between;
-    gap: 0;
-  }
-  .navigation a {
-    padding: 12px 10px;
-    font-size: 12px;
-  }
-  .site-intro {
-    padding: 20px 0;
-    font-size: 12px;
-  }
-  .site-intro span {
-    margin: 8px 0 0;
-    display: block;
-    font-size: 9px;
   }
   .page-grid {
     display: block;
@@ -772,16 +770,6 @@ time {
   }
   .sidebar-note {
     display: none;
-  }
-  .identity {
-    gap: 12px;
-  }
-  .portrait {
-    width: 52px;
-    height: 52px;
-  }
-  .host-label {
-    font-size: 10px;
   }
   .command-bar {
     align-items: flex-start;
@@ -854,9 +842,8 @@ time {
 
 .portrait {
   display: block;
-  border: 1px solid var(--amber-line);
-  padding: 4px;
-  background: var(--surface);
+  width: 128px;
+  height: 128px;
   flex-shrink: 0;
   object-fit: cover;
 }

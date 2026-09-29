@@ -12,7 +12,9 @@
   Keybase proof, portrait, all legacy asset paths and published dependency docs.
 - `G H`, `G A`, `G B`, `G C`, `G L`, `?`, backtick/tilde, `T`, Escape.
 - All 20 web-console commands, including aliases, history/repeat, time/UTC,
-  browser/referrer, CORS-aware fetch and permission-based geolocation.
+  browser/referrer, public-IP lookup, CORS-aware fetch and permission-based geolocation.
+  Command registration drives help and aliases; every command is behavior-tested.
+  The full original MIT license works offline.
 - Share links, donation link, social profiles, tweet content and video embeds.
 - nextjs-htk-backed light/dark theme, accessible dialogs, focus restoration,
   keyboard-safe typing, touch-accessible controls and JavaScript-free reading.
@@ -27,8 +29,10 @@
   or remote service does not work. Provider availability is not a local test pass.
 - Twitter timeline/tweets and Clarity widgets load on request with ordinary links
   as fallbacks. Local tests do not claim the remote provider works.
-- The old Java-applet IP lookup cannot expose an IP in a modern browser. The `ip`
-  command honestly returns unknown; no new IP-tracking service was introduced.
+- The old Java-applet IP lookup is replaced. The `ip`
+  command now explicitly requests a public IPv4/IPv6 address from ipify over HTTPS,
+  only when run. No lookup on page load; credentials and referrer are omitted.
+  Live browser lookup verified; provider/network failure gives an actionable error.
 - Google+ and legacy Flattr widgets are not recreated. Existing sharing/donation
   actions are available through ordinary links, without pretending those old
   provider APIs still work. Analytics are not activated on the preview; the old
@@ -38,7 +42,9 @@
 
 - Responsive terminal-inspired design retains the original white-on-black,
   orange/green palette and monospaced identity. The homepage heading is “Home”;
-  its SEO title remains “Home - Jonathan Tsai”.
+  its SEO title remains “Home - Jonathan Tsai”. The original Courier masthead has
+  a 128px portrait, dim “athan” on desktop, shortened “jontsai” below 47em, and
+  the centered italic verse; narrow screens scale it without horizontal clipping.
 - Blog pages 2–9 have unique page-number titles instead of nine identical titles.
 - The broken HackerOne profile link has its missing slash restored.
 - Kramdown and markdown-it disagree on literal pipe separators and one malformed

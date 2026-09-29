@@ -64,3 +64,24 @@ upload artifacts. Manual dry runs remain available; manual publishing requires
 both the activation flag and domain confirmation. Pages/OIDC write permissions
 belong only to the deployment job. No Pages settings or domain bindings are changed
 by this implementation. The one-time activation and rollback steps are in README.
+
+## Original masthead and functional console (September 28)
+
+Jonathan supplied desktop/mobile references: preserve the Courier wordmark,
+128px square portrait, dim desktop “athan”, and compact “jontsai” below the
+original 47em breakpoint. The centered italic verse returns above navigation.
+Small screens scale the masthead rather than retaining the old fixed-width overflow.
+
+The console's inherited Java-applet IP placeholder is not functional parity.
+Replace it with an explicit, on-command HTTPS public-IP lookup using ipify's
+IPv4/IPv6 endpoint (https://www.ipify.org/). No background lookup, cookies, or
+referrer. Browser networking has timeout/cancellation and bounded text output;
+CORS, HTTP and permission failures explain what happened without fabricating data.
+A command registry owns aliases, help and execution. All 20 advertised names are
+behavior-tested. The original full MIT license is retained offline, and copyright
+uses the current year/contact. Geolocation remains explicitly permission-based.
+
+The jonts.ai post already has its original dated permalink, recent-post entry,
+archive and taxonomy links. Recommend a permanent About-page contextual link plus
+an optional sidebar link so it remains discoverable after aging out of recent posts.
+No editorial content or navigation placement was changed for that recommendation.

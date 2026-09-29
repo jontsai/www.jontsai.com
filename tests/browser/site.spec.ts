@@ -180,3 +180,108 @@ test("long article and code blocks never enlarge the mobile page viewport", asyn
     test.info().project.name === "mobile",
   );
 });
+
+test("masthead restores full desktop name and compact mobile name without clipping", async ({
+  page,
+}) => {
+  await page.goto("/");
+  for (const width of [320, 390, 600, 752, 753, 1024, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    const fullName = page.locator(".wordmark .full-name");
+    if (width <= 752) await expect(fullName).toBeHidden();
+    else await expect(fullName).toBeVisible();
+    await expect(
+      page.getByRole("link", { name: "Jonathan Tsai, home", exact: true }),
+    ).toBeVisible();
+    const bounds = await page.locator(".wordmark").boundingBox();
+    expect(bounds!.x).toBeGreaterThanOrEqual(0);
+    expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(width);
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+    ).toBe(true);
+    if (width >= 1024)
+      expect((await page.locator(".portrait").boundingBox())!.width).toBe(128);
+  }
+});
+
+test("console network commands work, explain failures, and do not run until requested", async ({
+  page,
+}) => {
+  let requests = 0;
+  let response = '{"ip":"203.0.113.42"}';
+  await page.route("https://api64.ipify.org/**", (route) => {
+    requests++;
+    expect(route.request().headers()["cookie"]).toBeUndefined();
+    expect(route.request().headers()["referer"]).toBeUndefined();
+    return route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: response,
+    });
+  });
+  await page.goto("/");
+  await page.getByRole("button", { name: "Console `", exact: true }).click();
+  const input = page.getByRole("textbox", { name: "Console command" });
+  const log = page.getByRole("log");
+  const run = async (command: string) => {
+    await input.fill(command);
+    await input.press("Enter");
+    await expect(
+      page.getByRole("button", { name: "Run", exact: true }),
+    ).toBeEnabled();
+  };
+  await run("help ip");
+  expect(requests).toBe(0);
+  await run("ip");
+  await expect(log).toContainText("Public IP: 203.0.113.42");
+  response = '{"ip":"2001:db8::42"}';
+  await run("ip");
+  await expect(log).toContainText("Public IP: 2001:db8::42");
+  response = '{"ip":"<html>provider error</html>"}';
+  await run("ip");
+  await expect(log).toContainText("Public IP lookup failed");
+  await run("curl /robots.txt");
+  await expect(log).toContainText(
+    "Sitemap: https://www.jontsai.com/sitemap.xml",
+  );
+  await run("curl /missing-file-for-console-test.txt");
+  await expect(log).toContainText("HTTP 404");
+  await run("echo <img src=x onerror=alert(1)>");
+  await expect(log.locator("img")).toHaveCount(0);
+  await run("license()");
+  await expect(log).toContainText("Permission is hereby granted");
+  await input.fill("quit");
+  await input.press("Enter");
+  await expect(page.getByRole("dialog")).toBeHidden();
+});
+
+test("console location uses permission API and clear removes the map link", async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, "geolocation", {
+      value: {
+        getCurrentPosition(success: (value: unknown) => void) {
+          success({ coords: { latitude: 37.5, longitude: -122.25 } });
+        },
+      },
+    });
+  });
+  await page.goto("/");
+  await page.getByRole("button", { name: "Console `", exact: true }).click();
+  const input = page.getByRole("textbox", { name: "Console command" });
+  await input.fill("location");
+  await input.press("Enter");
+  await expect(page.getByRole("log")).toContainText("Location: 37.5, -122.25");
+  await expect(
+    page.getByRole("link", { name: "Open location in Google Maps" }),
+  ).toHaveAttribute("href", "https://maps.google.com/maps?q=37.5,-122.25");
+  await input.fill("clear");
+  await input.press("Enter");
+  await expect(
+    page.getByRole("link", { name: "Open location in Google Maps" }),
+  ).toHaveCount(0);
+  await expect(page.getByRole("log")).toHaveText("");
+});

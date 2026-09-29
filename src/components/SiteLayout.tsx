@@ -91,61 +91,56 @@ export function SiteLayout({
       </a>
       <div className="site-shell">
         <header className="site-header">
-          <div className="identity">
+          <a href="/" className="identity" aria-label="Jonathan Tsai, home">
             <img
               className="portrait"
               src="/img/portrait.jpg"
-              width="88"
-              height="88"
-              alt="Jonathan Tsai"
+              width="128"
+              height="128"
+              alt=""
             />
-            <div>
-              <span className="host-label">jontsai@www:~</span>
-              <a href="/" className="wordmark" aria-label="Jonathan Tsai, home">
-                jon<span>athan</span> tsai
-                <span className="cursor" aria-hidden="true">
-                  _
-                </span>
-              </a>
-            </div>
+            <span className="wordmark" aria-hidden="true">
+              jon<span className="full-name">athan</span>tsai
+            </span>
+          </a>
+          <div className="site-intro">
+            <p>{site.quote}</p> <span>({site.quoteSource})</span>
           </div>
-          <div className="header-actions">
-            <button
-              className="theme-button"
-              onClick={toggleTheme}
-              aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
-            >
-              {theme === "dark" ? "☀" : "☾"}
-            </button>
-          </div>
-          <nav
-            id="main-nav"
-            className="navigation"
-            aria-label="Main navigation"
-          >
-            {navigation.map((item) => (
-              <a
-                key={item.url}
-                href={item.url}
-                aria-current={
-                  (
-                    item.url === "/"
-                      ? canonical === "/"
-                      : canonical.startsWith(item.url)
-                  )
-                    ? "page"
-                    : undefined
-                }
+          <div className="navigation-bar">
+            <div className="header-actions">
+              <button
+                className="theme-button"
+                onClick={toggleTheme}
+                aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
               >
-                {item.title}
-              </a>
-            ))}
-          </nav>
+                {theme === "dark" ? "☀" : "☾"}
+              </button>
+            </div>
+            <nav
+              id="main-nav"
+              className="navigation"
+              aria-label="Main navigation"
+            >
+              {navigation.map((item) => (
+                <a
+                  key={item.url}
+                  href={item.url}
+                  aria-current={
+                    (
+                      item.url === "/"
+                        ? canonical === "/"
+                        : canonical.startsWith(item.url)
+                    )
+                      ? "page"
+                      : undefined
+                  }
+                >
+                  {item.title}
+                </a>
+              ))}
+            </nav>
+          </div>
         </header>
-        <div className="site-intro">
-          <p>{site.quote}</p>
-          <span>{site.quoteSource}</span>
-        </div>
         <div className="command-bar">
           <span className="session-label">
             <span aria-hidden="true">❯</span> welcome to my corner of the

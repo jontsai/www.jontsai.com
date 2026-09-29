@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { executeCommand } from "../lib/console";
+import { browserEnvironment } from "../lib/console-browser";
 export function WebConsole({ onClose }: { onClose: () => void }) {
   const [lines, setLines] = useState([
     'WebConsole by Jonathan Tsai. Type "help commands" to begin.',
@@ -9,10 +10,12 @@ export function WebConsole({ onClose }: { onClose: () => void }) {
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const [mapUrl, setMapUrl] = useState("");
+  const pending = useRef<AbortController | null>(null);
   const output = useRef<HTMLPreElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
     inputRef.current?.focus();
+    return () => pending.current?.abort();
   }, []);
   useEffect(() => {
     output.current?.scrollTo(0, output.current.scrollHeight);
@@ -28,34 +31,14 @@ export function WebConsole({ onClose }: { onClose: () => void }) {
     setPosition(nextHistory.length);
     setLines((old) => [...old, `>>> ${command}`]);
     try {
+      const controller = new AbortController();
+      pending.current = controller;
       const result = await executeCommand(
         command,
-        command.trim() === "!" ? history : nextHistory,
-        {
-          now: () => new Date(),
-          agent: navigator.userAgent,
-          referrer: document.referrer,
-          origin: location.origin,
-          fetchText: async (url) => {
-            const response = await fetch(url, {
-              signal: AbortSignal.timeout(10000),
-              credentials: "omit",
-            });
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-            return (await response.text()).slice(0, 100000);
-          },
-          locate: () =>
-            new Promise((resolve, reject) => {
-              if (!navigator.geolocation)
-                return reject(new Error("Unavailable"));
-              navigator.geolocation.getCurrentPosition(
-                (p) => resolve(p.coords),
-                reject,
-                { timeout: 10000 },
-              );
-            }),
-        },
+        history,
+        browserEnvironment(controller.signal),
       );
+      if (controller.signal.aborted) return;
       if (result.clear) {
         setLines([]);
         setMapUrl("");
@@ -64,14 +47,23 @@ export function WebConsole({ onClose }: { onClose: () => void }) {
         setLines((old) => [...old, result.output!]);
       if (result.mapUrl) setMapUrl(result.mapUrl);
       if (result.close) onClose();
+    } catch {
+      if (!pending.current?.signal.aborted)
+        setLines((old) => [
+          ...old,
+          "Command failed. Try again, or type help commands.",
+        ]);
     } finally {
-      setBusy(false);
-      inputRef.current?.focus();
+      if (!pending.current?.signal.aborted) {
+        setBusy(false);
+        inputRef.current?.focus();
+      }
+      pending.current = null;
     }
   }
   return (
     <div className="console">
-      <pre ref={output} role="log" aria-live="polite">
+      <pre ref={output} role="log" aria-live="polite" aria-busy={busy}>
         {lines.join("\n")}
       </pre>
       {mapUrl && (
