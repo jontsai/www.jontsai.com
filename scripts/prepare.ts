@@ -31,6 +31,10 @@ console.log(
 );
 
 fs.copyFileSync("content/assets/portrait.jpg", "public/img/portrait.jpg");
+// New editorial images live with the content, not in the frozen fixture:
+// content/assets/img/** overlays public/img/** (e.g. img/posts/<post>/...).
+if (fs.existsSync("content/assets/img"))
+  fs.cpSync("content/assets/img", "public/img", { recursive: true });
 // The existing reviewed/public Olark bootstrap remains isolated from the app;
 // load it only after a visitor explicitly opens live chat.
 const olarkTemplate = fs.readFileSync(
