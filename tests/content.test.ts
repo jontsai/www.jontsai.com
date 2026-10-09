@@ -27,7 +27,9 @@ test("every original published post is imported byte-for-byte and keeps its perm
   const original = fs
     .readdirSync(`${fixture}/_posts`)
     .filter((f) => f.endsWith(".md"));
-  assert.equal(posts.length, original.length);
+  // New posts are written here, not in the frozen fixture, so the site may
+  // have more posts than the baseline but never fewer.
+  assert.ok(posts.length >= original.length);
   for (const file of original) {
     const expected = fs.readFileSync(`${fixture}/_posts/${file}`, "utf8");
     assert.equal(fs.readFileSync(`content/posts/${file}`, "utf8"), expected);
